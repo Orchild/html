@@ -1,0 +1,117 @@
+
+<!-- saved from url=(0106)http://61.151.241.144:9005/chinagrandautostorefront/app/openreserve/home/1/15910784374?site=chinagrandauto -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no">
+<title>table</title>
+<script type="text/javascript" src="./table_files/jquery-2.1.3.min.js"></script><style type="text/css"></style>
+<link type="text/css" rel="stylesheet" media="screen" href="./table_files/public.css">
+<style type="text/css">
+.server form .form-info select {
+  margin-top: 4px;
+  line-height: 32px;
+  height: 32px;
+  background: none;
+  border: none;
+  color: #Ff7108;
+  text-align: right;
+  float: right;
+  outline: none;
+  font-size: 14px;
+  width:50%;
+}
+</style></head>
+
+ <body id="">
+    <div class="server">
+      <form id="reserveForm" name="reserveForm">
+        <div class="server-list">
+          <ul id="sList">
+          	<li id="MAINTENANCE"><span>保养</span></li>
+					<li id="REPAIR"><span>维修</span></li>
+					<li class="active" id="BUYING"><span>购车</span></li>
+					<li id="INSURANCE"><span>保险</span></li>
+					<li id="SECONDHANDCAR"><span>置换</span></li>
+					<li id="OTHERS"><span>其他</span></li>
+					</ul>
+        </div>
+        <input type="hidden" name="reserveType" id="reserveType" value="">
+        <input type="hidden" name="phoneNumber" id="phoneNumber" value="15910784374">
+        <div class="c l"><img src="./table_files/c2.png"></div>
+        <div class="c r" style="display: block;"><img src="./table_files/c1.png"></div>
+        <textarea id="reserveContent" name="reserveContent" placeholder="请大致描述具体内容(选填)"></textarea>
+        <div class="form-info">
+          <div>
+            <label><img src="./table_files/icon-1.png">门店</label>
+              <select id="storeSelect" name="Store4S">
+              	<option value="ZJ002">张江2店</option>
+            	<option value="ZJ001">张江1店</option>
+            	<option value="HE010">河北联拓汽车贸易有限公司（一汽奥迪）</option>
+            	<option value="CS001">川沙001店</option>
+            	</select>
+			</div>
+			<input type="hidden" name="storeCode" id="storeCode" value="">
+          <div>
+            <label><img src="./table_files/icon-2.png"><span>联系人</span></label>
+            <input name="reservePerson" placeholder="未填写">
+          </div>
+          <div>
+            <label><img src="./table_files/icon-3.png">电话</label>
+            <input name="contactPhoneNumber" id="contactPhoneNumber" value="15910784374">
+          </div>
+          <div>
+            <label><img src="./table_files/icon-4.png">车牌</label>
+            <input name="plateNumber" placeholder="未填写">
+          </div>
+        </div>
+      </form>
+       <div class="btn-box"><a id="btnSubmit" class="btn-1-big">预约</a></div>
+      <script charset="UTF-8">
+        $('.server-list li').click(function(){
+        	$('.server-list li').removeClass('active')
+        	$(this).addClass('active')
+        })
+        setServerListScrollTip()
+        function setServerListScrollTip(){
+        	console.log(1)
+        	if($('.server-list').scrollLeft()<80){
+        		$('.r').fadeIn()
+        		$('.l').fadeOut()
+        	}
+        	if($('.server-list').scrollLeft()<460 && $('.server-list').scrollLeft()>80){
+        		$('.l').fadeIn()
+        		$('.r').fadeOut()
+        	}
+        }
+        
+        var obj = document.getElementById('sList')
+        obj.addEventListener('touchend',setServerListScrollTip,false);
+        
+        $('#btnSubmit').on('click',submitReserve);
+        function submitReserve(){
+        	var type = $('#sList .active').attr("id");
+        	var store=$('#storeSelect').find('option:selected').attr("value");
+        	if(store==null||store==""){
+        		alert("请选择一个4S店");
+        		return;
+        	}
+        	 $('#reserveType').val(type);
+        	 $('#storeCode').val(store);
+        	 $.ajax({
+                type: "GET",
+                url: "/chinagrandautostorefront/app/openreserve/submit?site=chinagrandauto",
+                data:$('#reserveForm').serialize(),
+                async:false,
+                error: function(request) {
+                    alert("服务调用异常");
+                },
+                success: function(data) {
+                	alert(data);
+                }
+            });
+        }
+      </script>
+    </div>
+  
+</body></html>
